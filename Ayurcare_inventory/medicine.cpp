@@ -9,6 +9,12 @@ int Medicine::getQuantity() const { return quantity; }
 string Medicine::getExpiryDate() const { return expiryDate; }
 float Medicine::getPrice() const { return price; }
 
+void Medicine::setId(int i) { id = i; }
+void Medicine::setName(string n) { name = n; }
+void Medicine::setQuantity(int q) { quantity = q; }
+void Medicine::setExpiry(string d) { expiryDate = d; }
+void Medicine::setPrice(float p) { price = p; }
+
 void Inventory::loadFromFile()
 {
     container.clear();
