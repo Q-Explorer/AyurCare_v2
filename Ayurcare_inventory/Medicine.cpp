@@ -1,19 +1,51 @@
 #include <iostream>
 #include <fstream>
-#include "medicine.h"
+#include <sstream>
+#include <vector>
+#include <string>
 using namespace std;
 
-int Medicine::getId() const { return id; }
-string Medicine::getName() const { return name; }
-int Medicine::getQuantity() const { return quantity; }
-string Medicine::getExpiryDate() const { return expiryDate; }
-float Medicine::getPrice() const { return price; }
+class Medicine
+{
+    int id;
+    string name;
+    int quantity;
+    string expiryDate;
+    float price;
 
-void Medicine::setId(int i) { id = i; }
-void Medicine::setName(string n) { name = n; }
-void Medicine::setQuantity(int q) { quantity = q; }
-void Medicine::setExpiry(string d) { expiryDate = d; }
-void Medicine::setPrice(float p) { price = p; }
+public:
+    Medicine(int i, string n, int q, string expiry, float p) : id(i), name(n), quantity(q), expiryDate(expiry), price(p) {}
+    Medicine() {}
+
+    int getId() const { return id; }
+    string getName() const { return name; }
+    int getQuantity() const { return quantity; }
+    string getExpiryDate() const { return expiryDate; }
+    float getPrice() const { return price; }
+
+    void setId(int i) { id = i; }
+    void setName(string n) { name = n; }
+    void setQuantity(int q) { quantity = q; }
+    void setExpiry(string d) { expiryDate = d; }
+    void setPrice(float p) { price = p; }
+};
+
+class Inventory
+{
+    vector<Medicine> container;
+
+public:
+    void addMedicine(const Medicine &m);
+    void removeMedicine(int id);
+    void updateMedicine(int id, int newQty, float newPrice);
+    void displayInventory();
+    void loadFromFile();
+    void saveToFile();
+    void checkStock();
+    Medicine *searchMedicine(int id);
+    Medicine *searchMedicine(string name);
+    // void appendFromFile();
+};
 
 void Inventory::loadFromFile()
 {
@@ -134,6 +166,17 @@ Medicine *Inventory::searchMedicine(string name)
     return nullptr;
 }
 
+bool isNearExpiry(const string &date)
+{
+    int d, m, y;
+    char sep;
+    stringstream ss(date);
+    ss >> d >> sep >> m >> sep >> y;
+
+    int currentYear = 2026, currentMonth = 5;
+    return (y == currentYear && m <= currentMonth + 1);
+}
+
 void Inventory::checkStock()
 {
     for (const auto &med : container)
@@ -141,7 +184,8 @@ void Inventory::checkStock()
         if (med.getQuantity() < 5)
             cout << "Low stock alert for " << med.getName() << endl;
 
-        cout << "Expiry check: " << med.getName() << "expires on " << med.getExpiryDate() << "\n";
+        if (isNearExpiry(med.getExpiryDate()))
+            cout << "Expiry alert for: " << med.getName() << " expires on " << med.getExpiryDate() << "\n";
     }
 }
 
@@ -168,7 +212,7 @@ int main()
 
     do
     {
-        cout << "\nMedicine Inventory Menu\n1. Load inventory\n2. Display inventory\n3. Add medicine\n4. Remove medicine\n5. Search medicine by ID\n6. Search medicine by name\n7. Update medicine\n8. Check stock\n9. Save inventory\n0. Exit\nEnter your choice: ";
+        cout << "\nMedicine Inventory Menu\n1. Load inventory\n2. Display inventory\n3. Add medicine\n4. Remove medicine\n5. Search medicine by ID\n6. Search medicine by name\n7. Update medicine\n8. Check stock\n9. Exit\nEnter your choice: ";
         cin >> choice;
 
         if (choice == 1)
@@ -180,8 +224,10 @@ int main()
             int id, qty;
             string name, expiry;
             float price;
-            cout << "Enter ID, Name, Quantity, Expiry Date(withpuut space), Price: ";
-            cin >> id >> name >> qty >> expiry >> price;
+            cout << "Enter ID, Name, Quantity, Price, Expiry Date(withpuut space): ";
+            cin >> id >> name >> qty >> price;
+            cin.ignore();
+            getline(cin, expiry);
             Medicine m(id, name, qty, expiry, price);
             inv.addMedicine(m);
         }
@@ -224,11 +270,9 @@ int main()
         }
         else if (choice == 8)
             inv.checkStock();
-        else if (choice == 9)
-            inv.saveToFile();
         else
             cout << "Enter a valid choice.";
-    } while (choice != 0);
+    } while (choice != 9);
 
     return 0;
 }
