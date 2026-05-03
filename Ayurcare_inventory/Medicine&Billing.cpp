@@ -30,6 +30,19 @@ public:
     void setPrice(float p) { price = p; }
 };
 
+class Billing
+{
+    int billId;
+    vector<Medicine> purchased;
+    float totalAmount;
+
+public:
+    Billing(int id) : billId(id), totalAmount(0) {}
+    void addItem(const Medicine &m, int qty);
+    void printBill();
+    void saveBillToFile();
+};
+
 class Inventory
 {
     vector<Medicine> container;
@@ -44,7 +57,6 @@ public:
     void checkStock();
     Medicine *searchMedicine(int id);
     Medicine *searchMedicine(string name);
-    // void appendFromFile();
 };
 
 void Inventory::loadFromFile()
@@ -112,7 +124,7 @@ void Inventory::displayInventory()
     }
     else
     {
-        cout << "Current Inventory:\n";
+        cout << "\nCurrent Inventory:\n";
         for (const auto &med : container)
         {
             cout << "ID: " << med.getId()
@@ -205,6 +217,41 @@ void Inventory::updateMedicine(int id, int newQty, float newPrice)
     cout << "Medicine not found.\n";
 }
 
+void Billing::addItem(const Medicine &m, int q)
+{
+    if (m.getQuantity() >= q)
+    {
+        Medicine temp = m;
+        temp.setQuantity(q);
+        purchased.push_back(temp);
+        totalAmount += (q * m.getPrice());
+    }
+    else
+        cout << "Not enough stock for " << m.getName() << endl;
+}
+
+void Billing::printBill()
+{
+    cout << "\nBill --- #" << billId << endl;
+    for (auto &med : purchased)
+    {
+        cout << med.getName() << " x " << med.getQuantity() << " = " << (med.getQuantity() * med.getPrice()) << endl;
+    }
+    cout << "Total: " << totalAmount << endl;
+}
+
+void Billing::saveBillToFile()
+{
+    ofstream file("data/billing.txt", ios::app);
+    file << "Bill ID: " << billId << " Total: " << totalAmount << endl;
+    for (auto &med : purchased)
+    {
+        file << med.getName() << " | " << med.getQuantity() << " | " << med.getPrice() << endl;
+    }
+    file << "--------------";
+    file.close();
+}
+
 int main()
 {
     Inventory inv;
@@ -212,7 +259,7 @@ int main()
 
     do
     {
-        cout << "\nMedicine Inventory Menu\n1. Load inventory\n2. Display inventory\n3. Add medicine\n4. Remove medicine\n5. Search medicine by ID\n6. Search medicine by name\n7. Update medicine\n8. Check stock\n9. Exit\nEnter your choice: ";
+        cout << "\nMedicine Inventory Menu\n1. Load inventory\n2. Display inventory\n3. Add medicine\n4. Remove medicine\n5. Search medicine by ID\n6. Search medicine by name\n7. Update medicine\n8. Check stock\n9. Generate bill\n0. Exit\nEnter your choice: ";
         cin >> choice;
 
         if (choice == 1)
@@ -224,7 +271,7 @@ int main()
             int id, qty;
             string name, expiry;
             float price;
-            cout << "Enter ID, Name, Quantity, Price, Expiry Date(withpuut space): ";
+            cout << "Enter ID, Name, Quantity, Price, Expiry Date(without space): ";
             cin >> id >> name >> qty >> price;
             cin.ignore();
             getline(cin, expiry);
@@ -270,9 +317,40 @@ int main()
         }
         else if (choice == 8)
             inv.checkStock();
+        else if (choice == 9)
+        {
+            int billId;
+            char more;
+            cout << "Enter the bill ID: ";
+            cin >> billId;
+
+            Billing bill(billId);
+
+            do
+            {
+                int id, q;
+                cout << "Enter medicine ID and quantity: ";
+                cin >> id >> q;
+
+                Medicine *med = inv.searchMedicine(id);
+                if (med)
+                {
+                    bill.addItem(*med, q);
+                    inv.updateMedicine(id, med->getQuantity() - q, med->getPrice());
+                }
+                else
+                    cout << "Medicine not found.\n";
+
+                cout << "Enter more items(y/n): ";
+                cin >> more;
+            } while (more == 'y' || more == 'Y');
+
+            bill.saveBillToFile();
+            bill.printBill();
+        }
         else
             cout << "Enter a valid choice.";
-    } while (choice != 9);
+    } while (choice != 0);
 
     return 0;
 }
