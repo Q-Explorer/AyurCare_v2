@@ -13,16 +13,16 @@ class Medicine
 public:
     Medicine(int i, string n, int q, string expiry, float p) : id(i), name(n), quantity(q), expiryDate(expiry), price(p) {}
     Medicine() {}
-    
+
     int getId() const;
     string getName() const;
     int getQuantity() const;
     string getExpiryDate() const;
     float getPrice() const;
-    
+
     void displayMedicine();
     void updateMedicine();
-    
+
     void setId(int id);
     void setName(string n);
     void setQuantity(int q);
@@ -37,7 +37,9 @@ class Inventory
 public:
     void addMedicine(const Medicine &m);
     void removeMedicine(int id);
-    Medicine *searchMedicine();
+    void updateMedicine(int id, int newQty, float newPrice);
+    Medicine *searchMedicine(int id);
+    Medicine *searchMedicine(string name);
     void displayInventory();
     void loadFromFile();
     void appendFromFile();

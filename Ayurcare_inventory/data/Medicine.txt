@@ -1,2 +1,1 @@
-1	Paracetamol	10	1 August 2026	10.5
-2	Dolo-650	15	4 August 2026	12.75
+1	Paracetamol	15	05/08/2026	12.5

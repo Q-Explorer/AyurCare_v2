@@ -64,7 +64,7 @@ void Inventory::saveToFile()
                  << med.getName() << "\t"
                  << med.getQuantity() << "\t"
                  << med.getExpiryDate() << "\t"
-                 << med.getPrice() << "\n";
+                 << med.getPrice() << endl;
         }
 
         file.close();
@@ -87,7 +87,7 @@ void Inventory::displayInventory()
                  << " | Name: " << med.getName()
                  << " | Quantity: " << med.getQuantity()
                  << " | Expiry Date: " << med.getExpiryDate()
-                 << " | Price: " << med.getPrice() << "\n";
+                 << " | Price: " << med.getPrice() << endl;
         }
     }
 }
@@ -114,20 +114,121 @@ void Inventory::removeMedicine(int id)
     cout << "Medicine not found.\n";
 }
 
+Medicine *Inventory::searchMedicine(int id)
+{
+    for (auto &med : container)
+    {
+        if (med.getId() == id)
+            return &med;
+    }
+    return nullptr;
+}
+
+Medicine *Inventory::searchMedicine(string name)
+{
+    for (auto &med : container)
+    {
+        if (med.getName() == name)
+            return &med;
+    }
+    return nullptr;
+}
+
+void Inventory::checkStock()
+{
+    for (const auto &med : container)
+    {
+        if (med.getQuantity() < 5)
+            cout << "Low stock alert for " << med.getName() << endl;
+
+        cout << "Expiry check: " << med.getName() << "expires on " << med.getExpiryDate() << "\n";
+    }
+}
+
+void Inventory::updateMedicine(int id, int newQty, float newPrice)
+{
+    for (auto &med : container)
+    {
+        if (med.getId() == id)
+        {
+            med.setQuantity(newQty);
+            med.setPrice(newPrice);
+            saveToFile();
+            cout << "Medicine updated successfully.\n";
+            return;
+        }
+    }
+    cout << "Medicine not found.\n";
+}
+
 int main()
 {
-    Medicine m1(1, "Paracetamol", 10, "1 August 2026", 10.5);
-    Medicine m2(2, "Dolo-650", 15, "4 August 2026", 12.75);
-    Medicine m3(3, "Citrogen", 12, "30 July 2026", 9.25);
-    Inventory i1;
-    i1.loadFromFile();
-    i1.displayInventory();
-    i1.addMedicine(m1);
-    i1.addMedicine(m2);
-    i1.addMedicine(m3);
-    i1.displayInventory();
-    i1.removeMedicine(3);
-    i1.displayInventory();
-    i1.saveToFile();
+    Inventory inv;
+    int choice;
+
+    do
+    {
+        cout << "\nMedicine Inventory Menu\n1. Load inventory\n2. Display inventory\n3. Add medicine\n4. Remove medicine\n5. Search medicine by ID\n6. Search medicine by name\n7. Update medicine\n8. Check stock\n9. Save inventory\n0. Exit\nEnter your choice: ";
+        cin >> choice;
+
+        if (choice == 1)
+            inv.loadFromFile();
+        else if (choice == 2)
+            inv.displayInventory();
+        else if (choice == 3)
+        {
+            int id, qty;
+            string name, expiry;
+            float price;
+            cout << "Enter ID, Name, Quantity, Expiry Date(withpuut space), Price: ";
+            cin >> id >> name >> qty >> expiry >> price;
+            Medicine m(id, name, qty, expiry, price);
+            inv.addMedicine(m);
+        }
+        else if (choice == 4)
+        {
+            int id;
+            cout << "Enter the id of the medicine to be removed: ";
+            cin >> id;
+            inv.removeMedicine(id);
+        }
+        else if (choice == 5)
+        {
+            int id;
+            cout << "Enter the id to search the medicine: ";
+            cin >> id;
+            Medicine *m = inv.searchMedicine(id);
+            if (m)
+                cout << "Found: " << m->getName() << " | " << m->getPrice() << " | " << m->getQuantity() << endl;
+            else
+                cout << "Not found\n";
+        }
+        else if (choice == 6)
+        {
+            string name;
+            cout << "Enter the name to search the medicine: ";
+            cin >> name;
+            Medicine *m = inv.searchMedicine(name);
+            if (m)
+                cout << "Found: " << m->getId() << " | " << m->getPrice() << " | " << m->getQuantity() << endl;
+            else
+                cout << "Not found\n";
+        }
+        else if (choice == 7)
+        {
+            int id, qty;
+            float price;
+            cout << "Enter the id, new quantity and new price: ";
+            cin >> id >> qty >> price;
+            inv.updateMedicine(id, qty, price);
+        }
+        else if (choice == 8)
+            inv.checkStock();
+        else if (choice == 9)
+            inv.saveToFile();
+        else
+            cout << "Enter a valid choice.";
+    } while (choice != 0);
+
     return 0;
 }
