@@ -35,7 +35,7 @@ class Inventory
     vector<Medicine> container;
 
 public:
-    void addMedicine();
+    void addMedicine(const Medicine &m);
     void removeMedicine();
     Medicine *searchMedicine();
     void displayInventory();

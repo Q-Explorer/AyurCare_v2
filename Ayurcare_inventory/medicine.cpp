@@ -86,12 +86,20 @@ void Inventory::displayInventory()
     }
 }
 
-
+void Inventory::addMedicine(const Medicine &m)
+{
+    container.push_back(m);
+    saveToFile();
+    cout << "Medicine added successfully to the record.\n";
+}
 
 int main()
 {
+    Medicine m1(1, "Paracetamol", 10, "1 August 2026", 10.5);
     Inventory i1;
     i1.loadFromFile();
+    i1.displayInventory();
+    i1.addMedicine(m1);
     i1.displayInventory();
     i1.saveToFile();
     return 0;
