@@ -13,13 +13,16 @@ class Medicine
 public:
     Medicine(int i, string n, int q, string expiry, float p) : id(i), name(n), quantity(q), expiryDate(expiry), price(p) {}
     Medicine() {}
-    int getId();
-    string getName();
-    int getQuantity();
-    string getExpiryDate();
-    float getPrice();
+    
+    int getId() const;
+    string getName() const;
+    int getQuantity() const;
+    string getExpiryDate() const;
+    float getPrice() const;
+    
     void displayMedicine();
     void updateMedicine();
+    
     void setId(int id);
     void setName(string n);
     void setQuantity(int q);

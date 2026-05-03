@@ -1,7 +1,13 @@
 #include <iostream>
 #include <fstream>
-#include <medicine.h>
+#include "medicine.h"
 using namespace std;
+
+int Medicine::getId() const { return id; }
+string Medicine::getName() const { return name; }
+int Medicine::getQuantity() const { return quantity; }
+string Medicine::getExpiryDate() const { return expiryDate; }
+float Medicine::getPrice() const { return price; }
 
 void Inventory::loadFromFile()
 {
@@ -34,8 +40,37 @@ void Inventory::loadFromFile()
     cout << "Medicine record loaded successfully.\n";
 }
 
+void Inventory::saveToFile()
+{
+    ofstream file("data/medicine.txt");
+    if (!file)
+    {
+        cout << "Error: could not open the medicine.txt, no records found.\n";
+        return;
+    }
+
+    for (const auto &med : container)
+    {
+        file << med.getId() << "\t"
+             << med.getName() << "\t"
+             << med.getQuantity() << "\t"
+             << med.getExpiryDate() << "\t"
+             << med.getPrice() << "\n";
+    }
+
+    file.close();
+    cout << "Medicine records saved successfully.\n";
+}
+
+void Inventory::displayInventory()
+{
+    
+}
+
 int main()
 {
-
+    Inventory i1;
+    i1.loadFromFile();
+    i1.saveToFile();
     return 0;
 }
