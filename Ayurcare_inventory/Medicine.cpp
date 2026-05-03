@@ -99,13 +99,34 @@ void Inventory::addMedicine(const Medicine &m)
     cout << "Medicine added successfully to the record.\n";
 }
 
+void Inventory::removeMedicine(int id)
+{
+    for (auto it = container.begin(); it != container.end(); it++)
+    {
+        if (it->getId() == id)
+        {
+            container.erase(it);
+            saveToFile();
+            cout << "The medicine is removed from the record.\n";
+            return;
+        }
+    }
+    cout << "Medicine not found.\n";
+}
+
 int main()
 {
     Medicine m1(1, "Paracetamol", 10, "1 August 2026", 10.5);
+    Medicine m2(2, "Dolo-650", 15, "4 August 2026", 12.75);
+    Medicine m3(3, "Citrogen", 12, "30 July 2026", 9.25);
     Inventory i1;
     i1.loadFromFile();
     i1.displayInventory();
     i1.addMedicine(m1);
+    i1.addMedicine(m2);
+    i1.addMedicine(m3);
+    i1.displayInventory();
+    i1.removeMedicine(3);
     i1.displayInventory();
     i1.saveToFile();
     return 0;

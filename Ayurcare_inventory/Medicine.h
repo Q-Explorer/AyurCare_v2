@@ -36,7 +36,7 @@ class Inventory
 
 public:
     void addMedicine(const Medicine &m);
-    void removeMedicine();
+    void removeMedicine(int id);
     Medicine *searchMedicine();
     void displayInventory();
     void loadFromFile();
