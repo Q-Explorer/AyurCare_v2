@@ -14,63 +14,85 @@ void Inventory::loadFromFile()
     container.clear();
 
     ifstream file("data/medicine.txt");
+
     if (!file)
     {
         cout << "Error: could not open the medicine.txt, no records found.\n";
-        return;
     }
-
-    int tempId, tempQuantity;
-    string tempName, tempDate;
-    float tempPrice;
-
-    while (file >> tempId >> tempName >> tempQuantity >> tempDate >> tempPrice)
+    else
     {
-        Medicine m1;
-        m1.setId(tempId);
-        m1.setName(tempName);
-        m1.setQuantity(tempQuantity);
-        m1.setExpiry(tempDate);
-        m1.setPrice(tempPrice);
+        int tempId, tempQuantity;
+        string tempName, tempDate;
+        float tempPrice;
 
-        container.push_back(m1);
+        while (file >> tempId >> tempName >> tempQuantity >> tempDate >> tempPrice)
+        {
+            Medicine m1;
+            m1.setId(tempId);
+            m1.setName(tempName);
+            m1.setQuantity(tempQuantity);
+            m1.setExpiry(tempDate);
+            m1.setPrice(tempPrice);
+
+            container.push_back(m1);
+        }
+
+        file.close();
+        cout << "Medicine record loaded successfully.\n";
     }
-
-    file.close();
-    cout << "Medicine record loaded successfully.\n";
 }
 
 void Inventory::saveToFile()
 {
     ofstream file("data/medicine.txt");
+
     if (!file)
     {
         cout << "Error: could not open the medicine.txt, no records found.\n";
-        return;
     }
-
-    for (const auto &med : container)
+    else
     {
-        file << med.getId() << "\t"
-             << med.getName() << "\t"
-             << med.getQuantity() << "\t"
-             << med.getExpiryDate() << "\t"
-             << med.getPrice() << "\n";
-    }
+        for (const auto &med : container)
+        {
+            file << med.getId() << "\t"
+                 << med.getName() << "\t"
+                 << med.getQuantity() << "\t"
+                 << med.getExpiryDate() << "\t"
+                 << med.getPrice() << "\n";
+        }
 
-    file.close();
-    cout << "Medicine records saved successfully.\n";
+        file.close();
+        cout << "Medicine records saved successfully.\n";
+    }
 }
 
 void Inventory::displayInventory()
 {
-    
+    if (container.empty())
+    {
+        cout << "The inventory is empty.\n";
+    }
+    else
+    {
+        cout << "Current Inventory:\n";
+        for (const auto &med : container)
+        {
+            cout << "ID: " << med.getId()
+                 << " | Name: " << med.getName()
+                 << " | Quantity: " << med.getQuantity()
+                 << " | Expiry Date: " << med.getExpiryDate()
+                 << " | Price: " << med.getPrice() << "\n";
+        }
+    }
 }
+
+
 
 int main()
 {
     Inventory i1;
     i1.loadFromFile();
+    i1.displayInventory();
     i1.saveToFile();
     return 0;
 }
