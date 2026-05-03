@@ -1,0 +1,31 @@
+0|Dr Abhi Nayak|Panchakarma Specialist|9876543210|500.000000|9AM-1PM
+1|Dr Raghav Sharma|Ayurvedic Physician|9123456780|400.000000|10AM-2PM
+2|Dr Meena Gupta|Skin Specialist|9988776655|450.000000|11AM-3PM
+3|Dr Arjun Verma|Orthopedic Specialist|9012345678|600.000000|9AM-12PM
+4|Dr Kavya Singh|General Physician|9090909090|300.000000|2PM-6PM
+5|Dr Neha Kapoor|Nutrition Specialist|8877665544|350.000000|10AM-1PM
+6|Dr Rajat Tyagi|Panchakarma Specialist|9900112233|550.000000|1PM-5PM
+7|Dr Ayush Pandey|Physiotherapist|9876501234|400.000000|9AM-12PM
+8|Dr Shruti Chauhan|Skin Specialist|9811122233|500.000000|11AM-4PM
+9|Dr Kabir Malhotra|Neurologist|9123987654|700.000000|3PM-7PM
+10|Dr Simran Kaur|Ayurvedic Physician|7845123698|450.000000|9AM-1PM
+11|Dr Aditya Jain|General Physician|9098123456|350.000000|2PM-6PM
+12|Dr Harshit Bansal|Orthopedic Specialist|7000891122|650.000000|10AM-3PM
+13|Dr Kritika Kapoor|Nutrition Specialist|9812345000|400.000000|1PM-4PM
+14|Dr Vivek Rathore|Panchakarma Specialist|8956231478|600.000000|9AM-1PM
+15|Dr Ananya Mishra|Skin Specialist|9000789123|500.000000|11AM-3PM
+16|Dr Lakshay Sirohi|General Physician|8765432190|300.000000|2PM-5PM
+17|Dr Manish Rawat|Physiotherapist|8112233445|450.000000|10AM-2PM
+18|Dr Divya Raina|Neurologist|7007007007|750.000000|3PM-7PM
+19|Dr Rohit Saini|Ayurvedic Physician|9887766554|400.000000|9AM-12PM
+20|Dr Tanya Arora|Nutrition Specialist|9998887776|350.000000|1PM-4PM
+21|Dr Kunal Khanna|Orthopedic Specialist|9011122233|600.000000|10AM-3PM
+22|Dr Pooja Yadav|General Physician|9822334455|300.000000|2PM-6PM
+23|Dr Amit Saxena|Panchakarma Specialist|9334455667|550.000000|9AM-1PM
+24|Dr Riya Mehta|Skin Specialist|9445566778|500.000000|11AM-4PM
+25|Dr Saurabh Jain|Physiotherapist|9556677889|400.000000|10AM-2PM
+26|Dr Nidhi Agarwal|Ayurvedic Physician|9667788990|450.000000|9AM-1PM
+27|Dr Varun Kapoor|Neurologist|9778899001|700.000000|3PM-7PM
+28|Dr Ishita Bansal|Nutrition Specialist|9889900112|350.000000|1PM-4PM
+29|Dr Yash Malhotra|General Physician|9990011223|300.000000|2PM-6PM
+30|Suryansh Sirohi|Tester|7011293100|500.000000|5PM-7PM
