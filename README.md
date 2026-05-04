@@ -1,14 +1,14 @@
-#Instructions
+Instructions
 
-1. Download the zip file: AyurCare_C++_with_GUI.zip
+1. Download the raw zip file: AyurCare_C++_with_GUI.zip
 
 2. Unzip the file and open the folder in VS code
 
 3. In VS code press:
 
-Ctrl + ` (the key which is below esc)
+     Ctrl + ` (the key which is below esc)
 
-This will open the terminal
+     This will open the terminal
 
 4. Copy and paste the following command and hit enter, then wait for a while for a new line (your project path in your local storage) to appear:
 
