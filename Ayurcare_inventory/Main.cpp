@@ -3,8 +3,11 @@
 #include <sstream>
 #include <vector>
 #include <string>
-#include <cstring>
-
+#include <iomanip>
+#include <algorithm>
+#include <cctype>
+#include <climits>
+#include <cfloat>
 using namespace std;
 
 string trim(string s)
