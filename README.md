@@ -1,7 +1,7 @@
 Instructions
 
 1. Download the raw zip file: AyurCare_C++_with_GUI.zip
-<img width="2558" height="440" alt="image" src="https://github.com/user-attachments/assets/b70910a8-39c4-4b92-a813-9253ff2cc8aa" />
+<img width="2538" height="436" alt="image" src="https://github.com/user-attachments/assets/114d290f-7d88-4a82-92ab-c88945e289d6" />
 
 2. Unzip the file and open the folder in VS code
 
