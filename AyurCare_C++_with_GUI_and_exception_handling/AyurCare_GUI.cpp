@@ -1635,7 +1635,63 @@ void showReports()
     {
         if(ImGui::BeginTabItem("Low Stock / Expiry"))
         {
-            if(ImGui::BeginTable("lowStockTable",5,ImGuiTableFlags_Borders|ImGuiTableFlags_RowBg|ImGuiTableFlags_Resizable|ImGuiTableFlags_ScrollY,ImVec2(0,560)))
+            static int deleteMedicineId=0;
+
+            ImGui::InputInt("Medicine Id To Delete",&deleteMedicineId);
+
+            if(ImGui::Button("Delete Medicine",ImVec2(160,38)))
+            {
+                int pos=findMedicine(deleteMedicineId);
+
+                if(pos==-1)
+                {
+                    msg="Medicine id not found";
+                }
+                else
+                {
+                    medicineList.erase(medicineList.begin()+pos);
+
+                    if(saveMedicine())
+                    {
+                        msg="Medicine deleted";
+                        deleteMedicineId=0;
+                    }
+                }
+            }
+
+            ImGui::SameLine();
+
+            if(ImGui::Button("Clear Low Stock Medicines",ImVec2(220,38)))
+            {
+                int count=0;
+
+                for(int i=0;i<medicineList.size();)
+                {
+                    if(medicineList[i].qty<5)
+                    {
+                        medicineList.erase(medicineList.begin()+i);
+                        count++;
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
+
+                if(saveMedicine())
+                {
+                    msg="Low stock medicines cleared";
+                }
+
+                if(count==0)
+                {
+                    msg="No low stock medicines found";
+                }
+            }
+
+            ImGui::Separator();
+
+            if(ImGui::BeginTable("lowStockTable",5,ImGuiTableFlags_Borders|ImGuiTableFlags_RowBg|ImGuiTableFlags_Resizable|ImGuiTableFlags_ScrollY,ImVec2(0,500)))
             {
                 ImGui::TableSetupColumn("Medicine Id");
                 ImGui::TableSetupColumn("Name");
@@ -1649,14 +1705,19 @@ void showReports()
                     if(medicineList[i].qty<5||isNearExpiry(medicineList[i].expiry))
                     {
                         ImGui::TableNextRow();
+
                         ImGui::TableSetColumnIndex(0);
                         ImGui::Text("%d",medicineList[i].id);
+
                         ImGui::TableSetColumnIndex(1);
                         ImGui::Text("%s",medicineList[i].name.c_str());
+
                         ImGui::TableSetColumnIndex(2);
                         ImGui::Text("%d",medicineList[i].qty);
+
                         ImGui::TableSetColumnIndex(3);
                         ImGui::Text("%s",medicineList[i].expiry.c_str());
+
                         ImGui::TableSetColumnIndex(4);
 
                         if(medicineList[i].qty<5&&isNearExpiry(medicineList[i].expiry))
@@ -1682,7 +1743,112 @@ void showReports()
 
         if(ImGui::BeginTabItem("Billing"))
         {
-            if(ImGui::BeginTable("billingReportTable",5,ImGuiTableFlags_Borders|ImGuiTableFlags_RowBg|ImGuiTableFlags_Resizable|ImGuiTableFlags_ScrollY,ImVec2(0,560)))
+            static int deleteBillId=0;
+
+            ImGui::InputInt("Bill Id To Delete",&deleteBillId);
+
+            if(ImGui::Button("Delete Bill",ImVec2(140,38)))
+            {
+                ifstream fin(billFile);
+
+                if(!fin)
+                {
+                    msg="Billing file not found";
+                }
+                else
+                {
+                    vector<string> lines;
+                    string line;
+                    bool skip=false;
+                    bool found=false;
+
+                    while(getline(fin,line))
+                    {
+                        string t=trim(line);
+
+                        if(t.rfind("Bill ID:",0)==0)
+                        {
+                            string w1,w2,w3,totalText;
+                            int id=0;
+
+                            stringstream ss(t);
+                            ss>>w1>>w2>>id>>w3>>totalText;
+
+                            if(id==deleteBillId)
+                            {
+                                skip=true;
+                                found=true;
+                                continue;
+                            }
+                            else
+                            {
+                                skip=false;
+                            }
+                        }
+
+                        if(skip)
+                        {
+                            if(t=="--------------")
+                            {
+                                skip=false;
+                            }
+
+                            continue;
+                        }
+
+                        lines.push_back(line);
+                    }
+
+                    fin.close();
+
+                    ofstream fout(billFile);
+
+                    if(!fout)
+                    {
+                        msg="Cannot save billing file";
+                    }
+                    else
+                    {
+                        for(int i=0;i<lines.size();i++)
+                        {
+                            fout<<lines[i]<<"\n";
+                        }
+
+                        fout.close();
+
+                        if(found)
+                        {
+                            msg="Bill deleted";
+                            deleteBillId=0;
+                        }
+                        else
+                        {
+                            msg="Bill id not found";
+                        }
+                    }
+                }
+            }
+
+            ImGui::SameLine();
+
+            if(ImGui::Button("Clear All Bills",ImVec2(150,38)))
+            {
+                ofstream fout(billFile);
+
+                if(!fout)
+                {
+                    msg="Cannot clear billing file";
+                }
+                else
+                {
+                    fout.close();
+                    msg="All bills cleared";
+                }
+            }
+
+            ImGui::Separator();
+
+            if(ImGui::BeginTable("billingReportTable",5,ImGuiTableFlags_Borders|ImGuiTableFlags_RowBg|ImGuiTableFlags_Resizable|ImGuiTableFlags_ScrollY,ImVec2(0,500)))
             {
                 ImGui::TableSetupColumn("Bill Id");
                 ImGui::TableSetupColumn("Medicine");
@@ -1718,14 +1884,19 @@ void showReports()
                         if(v.size()>=3)
                         {
                             ImGui::TableNextRow();
+
                             ImGui::TableSetColumnIndex(0);
                             ImGui::Text("%d",currentBillId);
+
                             ImGui::TableSetColumnIndex(1);
                             ImGui::Text("%s",trim(v[0]).c_str());
+
                             ImGui::TableSetColumnIndex(2);
                             ImGui::Text("%s",trim(v[1]).c_str());
+
                             ImGui::TableSetColumnIndex(3);
                             ImGui::Text("%s",trim(v[2]).c_str());
+
                             ImGui::TableSetColumnIndex(4);
                             ImGui::Text("%s",currentTotal.c_str());
                         }
@@ -1741,8 +1912,46 @@ void showReports()
 
         if(ImGui::BeginTabItem("Appointments"))
         {
-            if(ImGui::BeginTable("appointmentReportTable",4,ImGuiTableFlags_Borders|ImGuiTableFlags_RowBg|ImGuiTableFlags_Resizable|ImGuiTableFlags_ScrollY,ImVec2(0,560)))
+            static int deleteAppointmentNo=0;
+
+            ImGui::InputInt("Appointment No To Delete",&deleteAppointmentNo);
+
+            if(ImGui::Button("Delete Appointment",ImVec2(180,38)))
             {
+                if(deleteAppointmentNo<=0||deleteAppointmentNo>visitList.size())
+                {
+                    msg="Invalid appointment number";
+                }
+                else
+                {
+                    visitList.erase(visitList.begin()+deleteAppointmentNo-1);
+
+                    if(saveVisits())
+                    {
+                        msg="Appointment deleted";
+                        deleteAppointmentNo=0;
+                    }
+                }
+            }
+
+            ImGui::SameLine();
+
+            if(ImGui::Button("Clear All Appointments",ImVec2(200,38)))
+            {
+                visitList.clear();
+
+                if(saveVisits())
+                {
+                    msg="All appointments cleared";
+                    deleteAppointmentNo=0;
+                }
+            }
+
+            ImGui::Separator();
+
+            if(ImGui::BeginTable("appointmentReportTable",5,ImGuiTableFlags_Borders|ImGuiTableFlags_RowBg|ImGuiTableFlags_Resizable|ImGuiTableFlags_ScrollY,ImVec2(0,500)))
+            {
+                ImGui::TableSetupColumn("No");
                 ImGui::TableSetupColumn("Patient Id");
                 ImGui::TableSetupColumn("Doctor Id");
                 ImGui::TableSetupColumn("Therapy");
@@ -1752,13 +1961,20 @@ void showReports()
                 for(int i=0;i<visitList.size();i++)
                 {
                     ImGui::TableNextRow();
+
                     ImGui::TableSetColumnIndex(0);
-                    ImGui::Text("%d",visitList[i].patientId);
+                    ImGui::Text("%d",i+1);
+
                     ImGui::TableSetColumnIndex(1);
-                    ImGui::Text("%d",visitList[i].doctorId);
+                    ImGui::Text("%d",visitList[i].patientId);
+
                     ImGui::TableSetColumnIndex(2);
-                    ImGui::Text("%s",visitList[i].therapy.c_str());
+                    ImGui::Text("%d",visitList[i].doctorId);
+
                     ImGui::TableSetColumnIndex(3);
+                    ImGui::Text("%s",visitList[i].therapy.c_str());
+
+                    ImGui::TableSetColumnIndex(4);
                     ImGui::Text("%s",visitList[i].time.c_str());
                 }
 
