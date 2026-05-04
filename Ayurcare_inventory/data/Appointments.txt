@@ -1,10 +1,18 @@
-1|0|Abhyanga|10AM-11AM
-2|1|Shirodhara|11AM-12PM
-3|2|Panchakarma Detox|12PM-1PM
-4|3|Kati Basti|9AM-10AM
-5|4|Nasya Therapy|2PM-3PM
-6|5|Abhyanga|3PM-4PM
-7|6|Shirodhara|10AM-11AM
-8|7|Panchakarma Detox|11AM-12PM
-9|8|Kati Basti|1PM-2PM
-10|9|Nasya Therapy|4PM-5PM
+1|1|Abhyanga|9AM-10AM
+2|2|Nadi Pariksha|10AM-11AM
+3|3|Skin Consultation|11AM-12PM
+4|4|Joint Therapy|9AM-10AM
+5|5|General Checkup|2PM-3PM
+6|6|Diet Consultation|10AM-11AM
+7|7|Shirodhara|1PM-2PM
+8|8|Physiotherapy|9AM-10AM
+9|9|Skin Treatment|12PM-1PM
+10|10|Neurology Consultation|3PM-4PM
+11|11|Ayurvedic Consultation|9AM-10AM
+12|12|General Checkup|2PM-3PM
+13|1|Panchakarma Detox|10AM-11AM
+14|2|Dosha Analysis|11AM-12PM
+15|7|Nasya Therapy|2PM-3PM
+16|8|Back Pain Therapy|10AM-11AM
+17|6|Nutrition Followup|11AM-12PM
+18|5|Fever Consultation|3PM-4PM
