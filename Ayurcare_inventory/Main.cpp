@@ -317,6 +317,17 @@ public:
         nextID++;
         cout << "Patient Added Successfully!" << endl;
     }
+    bool validate(int id)
+    {
+        for (patient &p : patients)
+        {
+            if (p.getID() == id)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     void updatePatient(int id, string name, string surname, int age, long long int no, Dosha dosha)
     {
         for (patient &p : patients)
@@ -331,7 +342,6 @@ public:
                 return;
             }
         }
-        cout << "Patient Not Found!!" << endl;
     }
 
     void delPatient(int id)
@@ -810,6 +820,11 @@ static void runPatientMenu(patientManagement &manage)
         case 2:
             cout << "Enter ID to Update: ";
             cin >> id;
+            if (!manage.validate(id))
+            {
+                cout << "ID Not Found!!" << endl;
+                break;
+            }
             cout << "Enter First Name: ";
             cin.ignore();
             getline(cin, name);
