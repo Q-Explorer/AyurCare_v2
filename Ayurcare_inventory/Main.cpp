@@ -2278,7 +2278,7 @@ int main()
     Inventory inventory;
     inventory.loadFromFile();
 
-    int root;
+    int choice;
 
     do
     {
@@ -2288,25 +2288,25 @@ int main()
         cout<<"3. Medicine & Billing\n";
         cout<<"0. Exit\n";
 
-        if(!inputInt("Select module: ",root,0,3))
+        if(!inputInt("Select module: ",choice,0,3))
         {
             cout<<"Fatal input error. Exiting.\n";
             return 0;
         }
 
-        if(root==1)
+        if(choice==1)
         {
             runDoctorMenu(doctorManager);
         }
-        else if(root==2)
+        else if(choice==2)
         {
             runPatientMenu(patients);
         }
-        else if(root==3)
+        else if(choice==3)
         {
             runMedicineBillingMenu(inventory);
         }
-        else if(root==0)
+        else if(choice==0)
         {
             cout<<"Exiting.\n";
         }
@@ -2314,7 +2314,7 @@ int main()
         {
             cout<<"Invalid choice.\n";
         }
-    }while(root!=0);
+    }while(choice!=0);
 
     patients.save();
 
