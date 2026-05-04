@@ -59,11 +59,11 @@ vector<visitData> visitList;
 int page=0;
 string msg="Ready";
 
-string patientFile="Patient.txt";
-string doctorFile="doctor.txt";
-string medicineFile="data/medicine.txt";
-string visitFile="appointments.txt";
-string billFile="data/billing.txt";
+string patientFile="data/Patient.txt";
+string doctorFile="data/Doctor.txt";
+string medicineFile="data/Medicine.txt";
+string visitFile="data/Appointments.txt";
+string billFile="data/Billing.txt";
 
 string trim(string s)
 {
